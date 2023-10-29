@@ -1,6 +1,7 @@
 const socket = io('http://localhost:3000')
 const roomContainer = document.getElementById('room-container')
 const messageContainer = document.getElementById('message-container')
+const scrollToBottomButton = document.getElementById('scrollToBottomButton')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 
@@ -19,6 +20,7 @@ if (messageForm != null) {
     if (message == null || message === '') return
 
     appendMyMessage(message)
+    scrollToBottom()
     socket.emit('send-chat-message', roomName, message)
     messageInput.value = ''
   })
@@ -28,13 +30,23 @@ if (messageContainer != null) {
   messageContainer.addEventListener("scroll", () => {
     // Check if the user has scrolled up
     userScrolledUp = messageContainer.scrollTop < messageContainer.scrollHeight - messageContainer.clientHeight
-    if (userScrolledUp) {
+
+    if (userScrolledUp && newMessageCount > 0) {
       scrollToBottomButton.style.display = "block"
     } else {
       scrollToBottomButton.style.display = "none"
-      newMessageCount = 0 // Reset the new message count
+      newMessageCount = 0
     }
-  });
+  })
+}
+
+if (scrollToBottomButton != null) {
+  scrollToBottomButton.addEventListener("click", () => {
+    scrollToBottom()
+    scrollToBottomButton.style.display = "none"
+    newMessageCount = 0
+    userScrolledUp = false
+  })
 }
 
 socket.on('room-created', room => {
@@ -56,18 +68,26 @@ socket.on('user-disconnected', name => {
 
 socket.on('chat-message', data => {
   appendOthersMessage(data.name, data.message)
+
+  // Increment the new message count if the user has scrolled up
+  if (userScrolledUp) {
+    newMessageCount++
+    scrollToBottomButton.innerText = `New Messages (${newMessageCount})`
+    scrollToBottomButton.style.display = "block"
+  } else {
+    scrollToBottomButton.style.display = "none"
+    scrollToBottom() // Scroll to the bottom if the user is at the bottom
+  }
 })
 
 function appendJoinMessage(message) {
   const messageElement = getMessageElement(message, 'join-message')
   messageContainer.append(messageElement)
-  scrollToBottom()
 }
 
 function appendMyMessage(message) {
   const messageElement = getMessageElement(message, 'my-message')
   messageContainer.append(messageElement)
-  scrollToBottom()
 }
 
 function appendOthersMessage(name, message) {
@@ -75,7 +95,6 @@ function appendOthersMessage(name, message) {
   const messageSenderElement = getMessageSenderElement(name)
   messageElement.prepend(messageSenderElement)
   messageContainer.append(messageElement)
-  scrollToBottom()
 }
 
 function getMessageElement(message, ...classList) {
@@ -93,5 +112,9 @@ function getMessageSenderElement(sender) {
 }
 
 function scrollToBottom() {
-  messageContainer.scrollTop = messageContainer.scrollHeight;
+  messageContainer.scrollTop = messageContainer.scrollHeight
+}
+
+function userHasScrolledUp() {
+  return messageContainer.scrollTop < messageContainer.scrollHeight - messageContainer.clientHeight
 }

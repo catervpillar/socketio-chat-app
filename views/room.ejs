@@ -15,7 +15,9 @@
 
 <body>
   <div class="container">
-    <div id="message-container"></div>
+    <div id="message-container">
+      <button id="scrollToBottomButton" class="hidden">New Messages (0)</button>
+    </div>
 
     <footer>
       <form action="" id="send-container">
@@ -51,6 +53,17 @@
     width: 100%;
     overflow-y: auto;
     position: relative;
+  }
+
+  #scrollToBottomButton {
+    position: fixed;
+    bottom: 68px;
+    right: 10px;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #000;
+    cursor: pointer;
+    display: none;
   }
 
   .message {
