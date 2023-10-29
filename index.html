@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+
+  <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div id="message-container"></div>
+
+    <footer>
+      <form action="" id="send-container">
+        <input type="text" id="message-input" placeholder="Type your message here">
+        <button type="submit" id="send-button">Send</button>
+      </form>
+    </footer>
+  </div>
+</body>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  body {
+    background: #eeeeee;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #message-container {
+    flex: 1;
+    margin: auto;
+    padding: 0.5rem;
+    max-width: 500px;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .message {
+    margin: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .message-sender {
+    font-weight: 600;
+  }
+
+  .join-message {
+    text-align: center;
+    font-size: 12px;
+    padding: 0.25rem;
+    margin: auto;
+  }
+
+  .my-message,
+  .others-message {
+    padding: 0.5rem;
+    background: #fff;
+  }
+
+  .my-message {
+    margin-left: 4rem;
+    background: #dfdfdf;
+  }
+
+  .others-message {
+    margin-right: 4rem;
+  }
+
+  footer {
+    background: #fff;
+    border-top: 1px solid black;
+  }
+
+  #send-container {
+    max-width: 500px;
+    padding: 0.5rem;
+    margin: auto;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  #message-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #000;
+  }
+
+  #send-button {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #000;
+    cursor: pointer;
+  }
+
+  #send-button:hover {
+    background: #d2d2d2;
+  }
+</style>
+
+</html>
