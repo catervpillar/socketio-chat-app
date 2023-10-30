@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat App</title>
 
+  <link rel="stylesheet" href="css/style.css">
   <script>
     const roomName = "<%= roomName %>"
   </script>
@@ -14,35 +15,38 @@
 </head>
 
 <body>
-  <div class="container">
+  <header class="header">
+    <div class="container">
+      <nav>
+        <h1>Room 1</h1>
+        <ul>
+          <li><a class="button" href="/">Exit</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="chat-content">
     <div id="message-container">
-      <button id="scrollToBottomButton" class="hidden">New Messages (0)</button>
+      <button class="button" id="scrollToBottomButton">New Messages (0)</button>
     </div>
 
-    <footer>
-      <form action="" id="send-container">
-        <input type="text" id="message-input" placeholder="Type your message here">
-        <button type="submit" id="send-button">Send</button>
+    <footer class="footer">
+      <form class="form" action="" id="send-container">
+        <input class="input" type="text" id="message-input" placeholder="Type your message here">
+        <button class="button" type="submit" id="send-button">Send</button>
       </form>
     </footer>
   </div>
 </body>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-  }
-
-  body {
-    background: #eeeeee;
-  }
-
-  .container {
+  .chat-content {
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 4rem);
+    margin-top: 4rem;
   }
 
   #message-container {
@@ -59,10 +63,6 @@
     position: fixed;
     bottom: 68px;
     right: 10px;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #000;
-    cursor: pointer;
     display: none;
   }
 
@@ -85,47 +85,23 @@
   .my-message,
   .others-message {
     padding: 0.5rem;
-    background: #fff;
+    background: #98B9F2;
+    color: #141B41;
   }
 
   .my-message {
     margin-left: 4rem;
-    background: #dfdfdf;
+    background: #918EF4;
+    color: #141B41;
   }
 
   .others-message {
     margin-right: 4rem;
   }
 
-  footer {
-    background: #fff;
-    border-top: 1px solid black;
-  }
-
-  #send-container {
-    max-width: 500px;
+  .footer {
+    background: #222D6D;
     padding: 0.5rem;
-    margin: auto;
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  #message-input {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #000;
-  }
-
-  #send-button {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #000;
-    cursor: pointer;
-  }
-
-  #send-button:hover {
-    background: #d2d2d2;
   }
 </style>
 

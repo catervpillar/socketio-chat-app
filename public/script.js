@@ -1,5 +1,5 @@
 const socket = io('http://localhost:3000')
-const roomContainer = document.getElementById('room-container')
+const chatRoomListElement = document.getElementById('chat-room-list')
 const messageContainer = document.getElementById('message-container')
 const scrollToBottomButton = document.getElementById('scrollToBottomButton')
 const messageForm = document.getElementById('send-container')
@@ -9,8 +9,13 @@ let newMessageCount = 0
 let userScrolledUp = false
 
 if (messageForm != null) {
-  const name = prompt('What is your name?')
-  appendJoinMessage('You joined')
+  let name = null
+
+  while (name == null || /^\s*$/.test(name)) {
+    name = prompt('What is your name?')
+  }
+
+  appendJoinMessage('You joined the chat')
   socket.emit('new-user', roomName, name)
 
   messageForm.addEventListener('submit', event => {
@@ -50,20 +55,16 @@ if (scrollToBottomButton != null) {
 }
 
 socket.on('room-created', room => {
-  const roomElement = document.createElement('div')
-  roomElement.innerText = room
-  const roomLink = document.createElement('a')
-  roomLink.href = `/${room}`
-  roomLink.innerText = 'Join'
-  roomContainer.append(roomElement, roomLink)
+  const chatRoomElement = getChatRoomElement(room)
+  chatRoomListElement.append(chatRoomElement)
 })
 
 socket.on('user-connected', name => {
-  appendJoinMessage(`${name} joined`)
+  appendJoinMessage(`${name} joined the chat`)
 })
 
 socket.on('user-disconnected', name => {
-  appendJoinMessage(`${name} disconnected`)
+  appendJoinMessage(`${name} left the chat`)
 })
 
 socket.on('chat-message', data => {
@@ -109,6 +110,18 @@ function getMessageSenderElement(sender) {
   messageSenderElement.classList.add('message-sender')
   messageSenderElement.innerText = sender
   return messageSenderElement
+}
+
+function getChatRoomElement(room) {
+  const chatRoomElement = document.createElement('div')
+  chatRoomElement.innerText = room
+  chatRoomElement.classList.add('chat-room-list-item')
+  const chatRoomLink = document.createElement('a')
+  chatRoomLink.href = `/${room}`
+  chatRoomLink.innerText = 'Join'
+  chatRoomLink.classList.add('button')
+  chatRoomElement.append(chatRoomLink)
+  return chatRoomElement
 }
 
 function scrollToBottom() {

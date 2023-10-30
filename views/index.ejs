@@ -6,21 +6,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat App</title>
 
+  <link rel="stylesheet" href="css/style.css">
   <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script defer src="script.js"></script>
 </head>
 
 <body>
-  <form action="/room" method="POST">
-    <input type="text" name="room" id="new-room" placeholder="Create a room" required>
-    <button type="submit">Create</button>
-  </form>
-  <div id="room-container">
-    <% Object.keys(rooms).forEach(room => { %>
-      <div><%= room %></div>
-      <a href="/<%= room %>">Join</a>
-    <% }) %>
+  <header class="header">
+    <div class="container">
+      <nav>
+        <h1>Chat Room App</h1>
+      </nav>
+    </div>
+  </header>
+
+  <div class="content">
+    <section class="container">
+      <p class="subtitle">
+        Welcome to this simple chat room app made with Node.js (Express) and Socket.io, using EJS to
+        serve static HTML pages.
+      </p>
+    </section>
+
+    <section class="container">
+      <h3 class="title">Create your room</h3>
+      <form class="form" action="/room" method="POST">
+        <input class="input" type="text" name="room" id="new-room" placeholder="Type your room name" required>
+        <button class="button" type="submit">Create</button>
+      </form>
+
+      <div class="divider">
+        <span></span>
+        <p>OR</p>
+        <span></span>
+      </div>
+
+      <h3 class="title">Join a room</h3>
+      <ul id="chat-room-list">
+        <% Object.keys(rooms).forEach(room=> { %>
+          <div class="chat-room-list-item">
+            <%= room %>
+              <a class="button" href="/<%= room %>">Join</a>
+          </div>
+          <% }) %>
+      </ul>
+    </section>
   </div>
+
+  <style>
+    .chat-room-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 0.5rem;
+      padding-left: 1rem;
+      border-radius: 8px;
+      background: #222D6D;
+    }
+
+    .chat-room-list-item:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+
 </body>
 
 </html>
